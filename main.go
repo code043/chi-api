@@ -1,20 +1,16 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"net/http"
+
+	"github.com/code043/chi-api/application"
 )
 
 func main() {
-	server := &http.Server{
-		Addr:    ":3000",
-		Handler: http.HandlerFunc(basicHandler),
-	}
-	err := server.ListenAndServe()
+	app := application.New()
+	err := app.Start(context.TODO())
 	if err != nil {
-		fmt.Println("Failed to listen to server")
+		fmt.Println("failed to start app: ", err)
 	}
-}
-func basicHandler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Golang"))
 }
