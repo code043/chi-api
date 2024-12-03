@@ -2,6 +2,18 @@ get http://localhost:3000/orders
 ###
 
 post http://localhost:3000/orders
+Content-Type: application/json 
+
+{
+  "customer_id": "b5c0563c-74a4-4e47-8b1a-4dd88610f2d3",
+  "line_items":[
+    {
+      "item_id": "b5c0563c-74a4-4e43-8b1a-4dd88610f2d3",
+      "quantity":5,
+      "price":1999
+    }
+  ]
+}
 
 ###
 
