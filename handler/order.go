@@ -2,10 +2,12 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math/rand"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/code043/chi-api/model"
@@ -86,8 +88,33 @@ func (h *Order) List(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Write(data)
 }
-func (o *Order) GetById(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Get an order by ID")
+func (h *Order) GetById(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path
+	//idParam := chi.URLParam(r, "id")
+	idParam := strings.Split(path, "/")[2]
+
+	const base = 10
+	const bitSize = 64
+
+	orderID, err := strconv.ParseUint(idParam, base, bitSize)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	o, err := h.Repo.FindById(r.Context(), orderID)
+	if errors.Is(err, order.ErrNotExist) {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	} else if err != nil {
+		fmt.Println("failed to find by id: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	if err := json.NewEncoder(w).Encode(o); err != nil {
+		fmt.Println("failed to marshal: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 }
 func (o *Order) UpdatedById(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Update an order by ID")
