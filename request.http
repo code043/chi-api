@@ -22,8 +22,11 @@ Content-Type: application/json
 get http://localhost:3000/orders/13420649058552460168
 ###
 
-put http://localhost:3000/orders/2
-###
+put http://localhost:3000/orders/13420649058552460168
+Content-Type: application/json 
 
+//{"status":"shipped"}
+{"status":"completed"}
+###
 delete http://localhost:3000/orders/2
 ###
