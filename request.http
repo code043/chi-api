@@ -7,10 +7,10 @@ post http://localhost:3000/orders
 Content-Type: application/json 
 
 {
-  "customer_id": "b5c0563c-74a4-4e47-8b1a-4dd88610f2d3",
+  "customer_id": "d2164195-efe7-456b-bc55-ab726285d9ed",
   "line_items":[
     {
-      "item_id": "b5c0563c-74a4-4e43-8b1a-4dd88610f2d3",
+      "item_id": "630b7cf4-f98e-408a-81f5-268e3fb8b4e1",
       "quantity":5,
       "price":1999
     }
@@ -28,5 +28,5 @@ Content-Type: application/json
 //{"status":"shipped"}
 {"status":"completed"}
 ###
-delete http://localhost:3000/orders/2
+delete http://localhost:3000/orders/3627992835977555884
 ###

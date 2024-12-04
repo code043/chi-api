@@ -184,6 +184,27 @@ func (h *Order) UpdateById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-func (o *Order) DeleteByID(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Delete an order by ID")
+func (h *Order) DeleteByID(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path
+	//idParam := chi.URLParam(r, "id")
+	idParam := strings.Split(path, "/")[2]
+
+	const base = 10
+	const bitSize = 64
+
+	orderID, err := strconv.ParseUint(idParam, base, bitSize)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	err = h.Repo.DeleteById(r.Context(), orderID)
+	if errors.Is(err, order.ErrNotExist) {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	} else if err != nil {
+		fmt.Println("failed to find by id: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 }
